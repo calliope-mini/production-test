@@ -9,3 +9,5 @@
 7. disconnect
 
 Takes approx. 40s per device.
+
+The test code is found here: [CalliopeTestBoard.cpp](https://github.com/calliope-mini/calliope-playground/blob/master/source/CalliopeTestBoard.cpp)
