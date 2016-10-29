@@ -45,7 +45,7 @@ while(true); do
     if (grep -q "^O\.K\." bootloader.log); then break; fi
   done
   echo
-  printf "\033[0;31m>>Calliope mini hochnehmen!<<\033[0m\n"
+  printf "\033[0;31m>> Calliope mini hochnehmen! <<\033[0m\n"
   sleep 3
   echo "2. DAPLink Firmware (KL26z) flashen"
   await_mount $MAINTENANCE 20
