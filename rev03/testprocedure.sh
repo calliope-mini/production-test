@@ -2,8 +2,7 @@
 MAINTENANCE=$1
 MINI=$2
 DAPLINK=`dirname $0`/0234_mini_if_p02.hex
-TESTFW=`dirname $0`/check.hex
-FINALFW=`dirname $0`/final.hex
+TESTFW=`dirname $0`/firmware.hex
 JLINK=`which JLinkExe`
 
 [ "$MAINTENANCE" == "" ] && MAINTENANCE=/Volumes/MAINTENANCE
