@@ -2,11 +2,12 @@
 
 1. Connect USB
 2. Put in test device
-3. Take off test device
-4. wait for initial bootloader flash and DAPlink flash
-5. wait for test firmware flash
-6. check led matrix, accel, rgb led, triple beep
-7. disconnect
+3. wait for initial bootloader flash
+4. Take off test device
+5. wait for DAPlink flash
+6. wait for test firmware flash
+7. check led matrix, accel, rgb led, triple beep
+8. disconnect
 
 Takes approx. 40s per device.
 
