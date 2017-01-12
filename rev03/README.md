@@ -12,3 +12,10 @@
 Takes approx. 40s per device.
 
 The test code is found here: [CalliopeTestBoard.cpp](https://github.com/calliope-mini/calliope-playground/blob/master/source/CalliopeTestBoard.cpp)
+
+## Wiring
+
+Wiring of the test adapter pins to the SEGGER.
+![SEGGER connections](img/segger_in.jpg)
+We need external 3.3V to trick the SEGGER VTref pin into believing it has the correct voltage.
+![3.3V fake input](img/3v3_fake.jpg)
