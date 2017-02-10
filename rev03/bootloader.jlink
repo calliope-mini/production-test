@@ -1,6 +1,0 @@
-erase
-loadbin kl26z_bl.bin, 0x0 
-r
-g
-exit
-
