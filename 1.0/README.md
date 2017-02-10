@@ -1,10 +1,9 @@
-# Calliope mini rev. 0.4 Test Procedure
+# Calliope mini rev. 1.0 Test Procedure
 
 1. Connect USB
 2. Put in test device
-3. wait for initial bootloader flash
+3. wait for bootloader & interface firmware flash
 4. Take off test device
-5. wait for DAPlink flash
 6. wait for test firmware flash
 7. check led matrix, accel, rgb led, triple beep
 8. disconnect
