@@ -1,4 +1,4 @@
+erase
 loadbin kl26z_bl_crc.bin, 0x0
 loadbin kl26z_calliope_if_crc.bin, 0x8000
-r
 exit

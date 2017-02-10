@@ -11,17 +11,15 @@ await_mount() {
   WAITSTART=$SECONDS
   MAX=$2
   DEVICE=$(blkid -L "$1")
-  # if the device already exists, unmount
-  if [ "$DEVICE" != "" ]; then udisksctl unmount -b $DEVICE; fi
   # wait until the device appears
-  until (blkid -L "$1" 2>&1 >/dev/null); do 
+  until (blkid -L "$1" 1>/dev/null 2>/dev/null); do 
     WAITELAPSED=$(($SECONDS-$WAITSTART))
     printf "\r\033[0;31mWARTE\033[0m [$1] (${WAITELAPSED}s/${MAX}s)"
     if [ "$WAITELAPSED" -gt "$2" ]; then echo; return 1; fi
   done
   DEVICE=$(blkid -L "$1")
   # wait for the device to mount
-  until (udisksctl mount -b $DEVICE 2>&1 >/dev/null); do
+  until (udisksctl mount -b $DEVICE 1>/dev/null 2>/dev/null); do
     WAITELAPSED=$(($SECONDS-$WAITSTART))
     printf "\r\033[0;31mWARTE\033[0m [$1] (${WAITELAPSED}s/${MAX}s)"
     if [ "$WAITELAPSED" -gt "$2" ]; then echo; return 1; fi
@@ -56,14 +54,14 @@ while(true); do
   done
   echo
   await_mount $MAINTENANCE 20
-  DEVICE=$(blkid -L $MAINTENANCE)
-  MOUNT=$(lsblk -o MOUNTPOINT -nr $DEVICE)
+  DEVICE=$(blkid -L $MAINTENANCE 2>/dev/null)
+  MOUNT=$(lsblk -o MOUNTPOINT -nr $DEVICE 2>/dev/null)
   if [ "$?" == "0" ]; then touch $MOUNT/start_if.act; fi
   printf "2. TEST Firmware (NRF51) flashen\n"
   printf "   \033[0;31mCalliope aufnehmen!\033[0m\n"
   await_mount $MINI 20 
-  DEVICE=$(blkid -L $MINI)
-  MOUNT=$(lsblk -o MOUNTPOINT -nr $DEVICE)
+  DEVICE=$(blkid -L $MINI 2>/dev/null)
+  MOUNT=$(lsblk -o MOUNTPOINT -nr $DEVICE 2>/dev/null)
   if [ "$?" != "0" ]; then continue; fi
   /bin/cp $TESTFW $MOUNT/
   if [ "$?" != "0" ]; then
@@ -74,11 +72,11 @@ while(true); do
   fi
   while [ -d $MOUNT ]; do echo -n "."; sleep 1; done
   echo
-  await_mount $MINI 20
-  DEVICE=$(blkid -L $MINI)
-  MOUNT=$(lsblk -o MOUNTPOINT -nr $DEVICE)
   printf "3. Pixel Matrix pruefen, RGB LED, Piep abwarten.\n"
   printf "   \033[0;31mDANACH Calliope mini abstecken!\033[0m\n"
+  await_mount $MINI 20
+  DEVICE=$(blkid -L $MINI 2>/dev/null)
+  MOUNT=$(lsblk -o MOUNTPOINT -nr $DEVICE 2>/dev/null)
   while [ -d $MOUNT ]; do echo -n "."; sleep 1; done
   echo
   echo "DONE"
