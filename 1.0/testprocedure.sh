@@ -10,7 +10,7 @@ JLINK=`which JLinkExe`
 await_mount() {
   WAITSTART=$SECONDS
   MAX=$2
-  DEVICE=$(blkid -L "$1")
+  DEVICE=$(blkid -L "$1" 2>/dev/null)
   # wait until the device appears
   until (blkid -L "$1" 1>/dev/null 2>/dev/null); do 
     WAITELAPSED=$(($SECONDS-$WAITSTART))
@@ -53,10 +53,12 @@ while(true); do
     if [ "$FLASHED" == "2" ]; then break; fi
   done
   echo
-  await_mount $MAINTENANCE 20
-  DEVICE=$(blkid -L $MAINTENANCE 2>/dev/null)
-  MOUNT=$(lsblk -o MOUNTPOINT -nr $DEVICE 2>/dev/null)
-  if [ "$?" == "0" ]; then touch $MOUNT/start_if.act; fi
+  await_mount $MAINTENANCE 10
+  if [ "$?" == "0" ]; then 
+    DEVICE=$(blkid -L $MAINTENANCE 2>/dev/null)
+    MOUNT=$(lsblk -o MOUNTPOINT -nr $DEVICE 2>/dev/null)
+    touch $MOUNT/start_if.act
+  fi
   printf "2. TEST Firmware (NRF51) flashen\n"
   printf "   \033[0;31mCalliope aufnehmen!\033[0m\n"
   await_mount $MINI 20 
