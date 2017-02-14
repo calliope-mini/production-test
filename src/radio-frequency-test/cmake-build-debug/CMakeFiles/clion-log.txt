@@ -1,0 +1,2 @@
+CMakeLists.txt not found in C:\Users\leo\Documents\GitHub\production-test\src\radio-frequency-test
+Cannot load CMake project: MinGW not found at: C:\Program Files (x86)\GNU Tools ARM Embedded\5.3 2016q1
