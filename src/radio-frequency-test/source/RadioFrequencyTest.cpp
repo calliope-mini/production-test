@@ -60,13 +60,14 @@ void rx(uint8_t frequency) {
 }
 
 typedef enum {
+    OFF,
     Radio00TX,
     Radio00RX,
     Radio78TX,
     Radio78RX
 } RadioState;
 
-RadioState state = Radio00TX;
+RadioState state = OFF;
 
 void onButtonA(MicroBitEvent event) {
     (void) event;
@@ -96,19 +97,23 @@ void onButtonB(MicroBitEvent event) {
     (void) event;
     switch (state) {
         case Radio00TX:
-            uBit.display.scroll("START TX00");
+            uBit.rgb.setColour(55,0,0,0);
+            uBit.display.scrollAsync("START TX00");
             tx(0);
             break;
         case Radio00RX:
-            uBit.display.scroll("START RX00");
+            uBit.rgb.setColour(0,55,0,0);
+            uBit.display.scrollAsync("START RX00");
             rx(0);
             break;
         case Radio78TX:
-            uBit.display.scroll("START TX78");
+            uBit.rgb.setColour(255,0,0,0);
+            uBit.display.scrollAsync("START TX78");
             tx(78);
             break;
         case Radio78RX:
-            uBit.display.scroll("START RX78");
+            uBit.rgb.setColour(0,255,0,0);
+            uBit.display.scrollAsync("START RX78");
             rx(78);
             break;
         default:
@@ -122,10 +127,9 @@ int main() {
 
     uBit.serial.baud(115200);
     uBit.serial.send("Radio Frequency Test\r\n");
-    uBit.display.scroll("OK");
 
     // initialize radio
-    //init();
+    init();
 
     // initialize button listeners
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, onButtonA);
