@@ -37,29 +37,17 @@ while(true); do
   if [ "$ELAPSED" -gt "1" ]; then
     echo "Letzter Test: ${ELAPSED}s"
     DATETIME=`date "+%Y.%m.%d %H:%M:%S"`
-    echo "$DATETIME $COUNT $ELAPSED" >> testprocedure.log
+    echo "$DATETIME $COUNT $ELAPSED" >> test_firmware.log
     COUNT=$((COUNT+1))
   fi
   START=$SECONDS
-  printf "\033[0;31mCalliope mini anstecken und einlegen!\033[0m\n"
-  while [ -d "$MINI" -o -d "$MAINTENANCE" ]; do sleep 1; printf "."; done
-  echo
-  echo "1. Bootloader & Interface flashen"
-  while(true); do
-    ELAPSED=$((SECONDS-START))
-    printf "\r\033[0;31mWARTE\033[0m(${ELAPSED}s)"
-    $JLINK -if SWD -device MKL26Z128XXX4 -speed 4000 bootloader.jlink > bootloader.log
-    FLASHED=$(grep "^O\.K\." bootloader.log | wc -l)
-    if [ "$FLASHED" == "2" ]; then break; fi
-  done
-  echo
   await_mount $MAINTENANCE 10
   if [ "$?" == "0" ]; then 
     DEVICE=$(blkid -L $MAINTENANCE 2>/dev/null)
     MOUNT=$(lsblk -o MOUNTPOINT -nr $DEVICE 2>/dev/null)
     touch $MOUNT/start_if.act
   fi
-  printf "2. TEST Firmware (NRF51) flashen\n"
+  printf "1. TEST Firmware (NRF51) flashen\n"
   printf "   \033[0;31mCalliope aufnehmen!\033[0m\n"
   await_mount $MINI 20 
   DEVICE=$(blkid -L $MINI 2>/dev/null)
