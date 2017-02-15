@@ -99,22 +99,22 @@ void onButtonB(MicroBitEvent event) {
         case Radio00TX:
             uBit.rgb.setColour(55,0,0,0);
             uBit.display.scrollAsync("START TX00");
-            tx(0);
+            tx(2);
             break;
         case Radio00RX:
             uBit.rgb.setColour(0,55,0,0);
             uBit.display.scrollAsync("START RX00");
-            rx(0);
+            rx(2);
             break;
         case Radio78TX:
             uBit.rgb.setColour(255,0,0,0);
             uBit.display.scrollAsync("START TX78");
-            tx(78);
+            tx(80);
             break;
         case Radio78RX:
             uBit.rgb.setColour(0,255,0,0);
             uBit.display.scrollAsync("START RX78");
-            rx(78);
+            rx(80);
             break;
         default:
             /* do nothing */
