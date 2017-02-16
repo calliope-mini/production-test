@@ -47,6 +47,7 @@ int main() {
     new MicroBitTemperatureService(*uBit.ble, uBit.thermometer);
 
     uBit.soundmotor.motorOn(100);
+    uBit.rgb.setMaxBrightness(255);
     uBit.rgb.setColour(255, 255, 255, 0);
 
     int i = 0;
