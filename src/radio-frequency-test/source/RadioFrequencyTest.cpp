@@ -1,3 +1,20 @@
+/**
+ * Calliope Radio Frequency Test.
+ *
+ * The code allows to select BT channels 00 and 78 to send on
+ * the frequencies 2400MHz and 2478MHz for continuuous testing.
+ *
+ * With Button A you select the channel and RX or TX mode.
+ * With Button B you start the test.
+ *
+ * @copyright (c) Calliope gGmbH.
+ *
+ * Licensed under the Apache Software License 2.0 (ASL 2.0)
+ * Portions (c) Copyright British Broadcasting Corporation under MIT License.
+ *
+ * @author Matthias L. Jugel <leo@calliope.cc>
+ */
+
 #include "MicroBit.h"
 #include "nrf.h"
 #include "nrf51.h"
