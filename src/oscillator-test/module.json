@@ -1,0 +1,11 @@
+{
+  "name": "oscillator-test",
+  "version": "1.0.0",
+  "description": "Calliope mini oscillator test.",
+  "license": "Apache 2.0",
+  "dependencies": {
+    "microbit": "calliope-mini/microbit#v2.0.0-rc7-calliope-1.0.1"
+  },
+  "targetDependencies": {},
+  "bin": "./source"
+}
