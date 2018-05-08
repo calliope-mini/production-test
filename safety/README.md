@@ -11,7 +11,7 @@ This is a simple program which allows pairing with a mobile phone to test BT rad
 
 This is a radio test program from the [nRF54 SDK](https://developer.nordicsemi.com/). 
 It is controlled via the serial console (USB, 115200, 8N1). After flashing, connect to
-the serial console and press `h` for help.
+the serial console and press `h` and Enter for help.
 
 ## radio-frequency-test.hex 
  
