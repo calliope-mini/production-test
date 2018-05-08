@@ -15,7 +15,7 @@
 
 MicroBit uBit;
 MicroBitImage full(
-"255,255,255,255,255\n255,255,255,255,255\n255,255,255,255,255\n255,255,255,255,255\n255,255,255,255,255\n");
+        "255,255,255,255,255\n255,255,255,255,255\n255,255,255,255,255\n255,255,255,255,255\n255,255,255,255,255\n");
 
 // we use events abd the 'connected' variable to keep track of the status of the Bluetooth connection
 void onConnected(MicroBitEvent) {
@@ -51,8 +51,10 @@ int main() {
     uBit.rgb.setColour(255, 255, 255, 0);
 
     int i = 0;
-    for(;;) {
+    for (;;) {
         uBit.sleep(1);
-        if(++i % 1000000 == 0) printf("MCU: %dºC\r\n", uBit.thermometer.getTemperature());
+        if (++i % 0x100 == 0) {
+            printf("MCU: %02dºC\r\n", uBit.thermometer.getTemperature());
+        }
     }
 }

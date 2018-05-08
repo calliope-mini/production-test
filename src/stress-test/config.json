@@ -1,7 +1,8 @@
 {
   "microbit-dal":{
     "bluetooth": {
-      "enabled": 1
+      "enabled": 1,
+      "open": 1
     },
     "debug": 1
   }
