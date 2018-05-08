@@ -1,14 +1,25 @@
 # Safety test related files
 
+Connect Calliope mini using a USB Cable. Download the firmware hex file you want and copy it onto the `MINI` drive that is mounted.
+To ensure it's working, press the white RESET button.
+
 ## bt-pairing-test.hex
 
 This is a simple program which allows pairing with a mobile phone to test BT radio
 
-## radio-test.hex
+## radiotest.hex
 
 This is a radio test program from the [nRF54 SDK](https://developer.nordicsemi.com/). 
 It is controlled via the serial console (USB, 115200, 8N1). After flashing, connect to
 the serial console and press `h` for help.
+
+## radio-frequency-test.hex 
+ 
+- After successful flashing, the display should scroll "READY".
+- Use the button `A` to select the transmission/reception channel: `TX00`, `RX00`, ..., `TX78`, `RX78`
+- Activate the transmission/reception mode using button `B`. 
+
+At the start of the mode the display scrolls `START ?X??` (i.e. `START TX00`) and the RGB LED will be red for *sending* and green for *receiving* mode. Channel `00` is less bright than channel `78`.
 
 ## calliope-stress.hex
 
