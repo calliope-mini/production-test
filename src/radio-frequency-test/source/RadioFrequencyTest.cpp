@@ -80,28 +80,36 @@ typedef enum {
     OFF,
     Radio00TX,
     Radio00RX,
+    Radio39TX,
+    Radio39RX,
     Radio78TX,
     Radio78RX
 } RadioState;
 
-RadioState state = OFF;
+int state = OFF;
 
 void onButtonA(MicroBitEvent event) {
     (void) event;
+
+    ++state;
     switch (state) {
         case Radio00TX:
-            state = Radio00RX;
-            uBit.display.scroll("RX00");
+            uBit.display.scroll("TX00");
             break;
         case Radio00RX:
-            state = Radio78TX;
-            uBit.display.scroll("TX78");
-            rx(0);
+            uBit.display.scroll("RX00");
+            break;
+        case Radio39TX:
+            uBit.display.scroll("TX39");
+            break;
+        case Radio39RX:
+            uBit.display.scroll("RX39");
             break;
         case Radio78TX:
-            state = Radio78RX;
+            uBit.display.scroll("TX78");
+            break;
+        case Radio78RX:
             uBit.display.scroll("RX78");
-            tx(78);
             break;
         default:
             state = Radio00TX;
@@ -122,6 +130,16 @@ void onButtonB(MicroBitEvent event) {
             uBit.rgb.setColour(0,55,0,0);
             uBit.display.scrollAsync("START RX00");
             rx(2);
+            break;
+        case Radio39TX:
+            uBit.rgb.setColour(150,0,0,0);
+            uBit.display.scrollAsync("START TX39");
+            tx(40);
+            break;
+        case Radio39RX:
+            uBit.rgb.setColour(0,150,0,0);
+            uBit.display.scrollAsync("START RX39");
+            rx(40);
             break;
         case Radio78TX:
             uBit.rgb.setColour(255,0,0,0);
