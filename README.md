@@ -19,3 +19,10 @@ Current procedure requires a SEGGER JLink debug probe. You need to download the 
 - Accelerometer interrupt pin changed (`p27` -> `p21`)     
 
 ![Calliope mini v1.0](1.0/img/calliope_mini_rev10.jpg)
+
+## revision 1.3 (2018)
+
+- expanded Motor driver connector, press-fit ready
+- fixed power separation for battery / USB
+
+![Calliope mini v1.3](1.3/img/calliope_mini_rev13.jpg)
