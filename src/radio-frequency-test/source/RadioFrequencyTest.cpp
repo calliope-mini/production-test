@@ -78,77 +78,76 @@ void rx(uint8_t frequency) {
 
 typedef enum {
     OFF,
-    Radio00TX,
-    Radio00RX,
-    Radio39TX,
-    Radio39RX,
-    Radio78TX,
-    Radio78RX
+    Radio02TX,
+    Radio02RX,
+    Radio40TX,
+    Radio40RX,
+    Radio80TX,
+    Radio80RX
 } RadioState;
 
 int state = OFF;
+int operation = 0;
 
 void onButtonA(MicroBitEvent event) {
     (void) event;
 
     ++state;
+    operation = 0;
     switch (state) {
-        case Radio00TX:
-            uBit.display.scroll("TX00");
+        case Radio02TX:
+            uBit.display.scrollAsync("TX02");
             break;
-        case Radio00RX:
-            uBit.display.scroll("RX00");
+        case Radio02RX:
+            uBit.display.scrollAsync("RX02");
             break;
-        case Radio39TX:
-            uBit.display.scroll("TX39");
+        case Radio40TX:
+            uBit.display.scrollAsync("TX40");
             break;
-        case Radio39RX:
-            uBit.display.scroll("RX39");
+        case Radio40RX:
+            uBit.display.scrollAsync("RX40");
             break;
-        case Radio78TX:
-            uBit.display.scroll("TX78");
+        case Radio80TX:
+            uBit.display.scrollAsync("TX80");
             break;
-        case Radio78RX:
-            uBit.display.scroll("RX78");
+        case Radio80RX:
+            uBit.display.scrollAsync("RX80");
             break;
         default:
-            state = Radio00TX;
-            uBit.display.scroll("TX00");
+            state = Radio02TX;
+            uBit.display.scrollAsync("TX00");
             break;
     }
 }
 
 void onButtonB(MicroBitEvent event) {
     (void) event;
+    operation = 1;
+    tx(OFF);
+    rx(OFF);
     switch (state) {
-        case Radio00TX:
-            uBit.rgb.setColour(55,0,0,0);
-            uBit.display.scrollAsync("START TX00");
+        case Radio02TX:
+            uBit.display.scrollAsync("START TX 2402");
             tx(2);
             break;
-        case Radio00RX:
-            uBit.rgb.setColour(0,55,0,0);
-            uBit.display.scrollAsync("START RX00");
+        case Radio02RX:
+            uBit.display.scrollAsync("START RX 2402");
             rx(2);
             break;
-        case Radio39TX:
-            uBit.rgb.setColour(150,0,0,0);
-            uBit.display.scrollAsync("START TX39");
+        case Radio40TX:
+            uBit.display.scrollAsync("START TX 2440");
             tx(40);
             break;
-        case Radio39RX:
-            uBit.rgb.setColour(0,150,0,0);
-            uBit.display.scrollAsync("START RX39");
+        case Radio40RX:
+            uBit.display.scrollAsync("START RX 2440");
             rx(40);
             break;
-        case Radio78TX:
-            uBit.rgb.setColour(255,0,0,0);
-            uBit.display.scrollAsync("START TX78");
+        case Radio80TX:
+            uBit.display.scrollAsync("START TX 2480");
             tx(80);
             break;
-        case Radio78RX:
-            uBit.rgb.setColour(0,255,0,0);
-            uBit.display.scrollAsync("START RX78");
+        case Radio80RX:
+            uBit.display.scrollAsync("START RX 2480");
             rx(80);
             break;
         default:
@@ -156,6 +155,13 @@ void onButtonB(MicroBitEvent event) {
             break;
     }
 }
+
+const uint8_t LED[32] = {
+        0, 1, 2, 3, 4, 5, 7, 9,
+        12, 15, 18, 22, 27, 32, 38, 44,
+        51, 58, 67, 76, 86, 96, 108, 120,
+        134, 148, 163, 180, 197, 216, 235, 255
+};
 
 int main() {
     uBit.init();
@@ -170,9 +176,39 @@ int main() {
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, onButtonA);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, onButtonB);
 
-
+    uBit.rgb.setMaxBrightness(255);
     uBit.display.clear();
     uBit.display.scroll("READY");
 
-    while (1) uBit.sleep(1000);
+    int fade = 1;
+    uint8_t onoff = 0;
+    int color = 0;
+    while (1) {
+        if (operation) {
+            switch (state) {
+                case Radio02TX:
+                case Radio40TX:
+                case Radio80TX:
+                    uBit.rgb.setColour(LED[color], 0, 0, 0);
+                    color += fade;
+                    if (color <= 0 || color >= 31) fade = -fade;
+                    break;
+                case Radio02RX:
+                case Radio40RX:
+                case Radio80RX:
+                    uBit.rgb.setColour(0, LED[color], 0, 0);
+                    color += fade;
+                    if (color <= 0 || color >= 31) fade = -fade;
+
+                    break;
+                default:
+                    break;
+            }
+            uBit.sleep(50);
+        } else {
+            uBit.rgb.setColour(0, 0, 0, 0);
+            uBit.display.image.setPixelValue(4, 4, onoff = !onoff);
+            uBit.sleep(500);
+        }
+    }
 }
