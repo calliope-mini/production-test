@@ -16,10 +16,11 @@ the serial console and press `h` and Enter for help.
 ## radio-frequency-test.hex 
  
 - After successful flashing, the display should scroll "READY".
-- Use the button `A` to select the transmission/reception channel: `TX00`, `RX00`, `TX78`, and `RX78`
+- Use the button `A` to select the transmission/reception frequency: `TX02`, `RX02`, `TX40`, `RX40`, `TX80`, and `RX80`
 - Activate the transmission/reception mode using button `B`. 
 
-At the start of the mode the display scrolls `START ?X??` (i.e. `START TX00`) and the RGB LED will be red for *sending* and green for *receiving* mode. Channel `00` is less bright than channel `78`.
+At the start of the mode the display scrolls `START ?X 24??` (i.e. `START TX 2402`) and the RGB LED 
+will pulse red for *sending* and green for *receiving* mode.
 
 ## calliope-stress.hex
 
