@@ -37,8 +37,9 @@ JLinkExe -device NRF52820_XXAA -CommandFile commandfile.jlink
 
 
 https://devzone.nordicsemi.com/f/nordic-q-a/12484/approtect-and-dap
-es braucht so ein vorconnect zustand, deswegen  -if SWD -speed 40000 -autoconnect 1 nicht in command, swd interface erst danach auswählen
+es braucht so ein vorconnect zustand, deswegen  "-if SWD -speed 40000 -autoconnect 1" nicht in command, swd interface erst danach auswählen
 
+https://wiki.segger.com/UM08001_J-Link_/_J-Trace_User_Guide#Reset_unlock_message_box
 
 Debug Power is 5V!!
 
