@@ -1,0 +1,10 @@
+Power on
+SI 1 // Select Interface 
+Speed 4000 // Select SWD Speed
+reset
+halt
+loadfile /home/hugo/mini3fw/production-test/3.0/nrf52820_microbit_bl_crc.hex
+loadfile /home/hugo/mini3fw/production-test/3.0/nrf52820_microbit_if_crc_proto2_11mai.hex
+reset
+go
+exit
