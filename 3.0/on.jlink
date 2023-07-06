@@ -1,0 +1,3 @@
+power on //Turns on 5V debug voltage just to make sure that it is on
+ShowHWStatus   //Double Check
+exit
