@@ -51,17 +51,22 @@ break # If mini is not found, start anew
 fi;
 
 cp $APPLICATION_FW $MOUNT; # Flash application firmware
-if [[ $? = 0 ]]; then
+if [[ $? = 0 ]];
+then 
 printf "${GRE}SUCCESS: Programming done in $(($SECONDS - $START)) seconds. ${DEF}\n";
+echo 1 > /sys/class/leds/led0/brightness; # turns on green ACT LED
+else 
+printf "${RED}Flashing of NRF52833 failed ${DEF}\n"; break; break;
+fi; 
+
+# Here testing needs to be implemented
+# Wait for mini disconnection
 
 while true; do
-if [ -d "$MOUNT" ]; then sleep 1; else printf "${MAG}DISCONNECT THE MINI${DEF}\n"; break; fi; # Test if mini is still connected
+if [ -d "$MOUNT" ]; then printf "${MAG}Test and disconnect minis${DEF}\n"; sleep 1; else  break; fi; # Test if mini is still connected
 done
-# Here testing needs to be implemented
-echo 1 > /sys/class/leds/led0/brightness; # turns on green ACT LED
 break; # Everything successful, start anew
-else printf "${RED}Flashing of NRF52833 failed ${DEF}\n"; break; break;
-fi; 
+
 
 done;
 done;
