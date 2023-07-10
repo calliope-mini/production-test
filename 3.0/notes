@@ -29,6 +29,7 @@ Beobachtungen 10.7.23
   -> rsync nicht verwenden
 - JLinkExe Command not found obwohl JLinkExe in Path
   - nur in .bashrc?
+  -> JLink Verzeichnis in Path im Service realisieren
 
 sudo chmod 666 /sys/class/leds/led0/brightness
 echo 1 > /sys/class/leds/led0/brightness

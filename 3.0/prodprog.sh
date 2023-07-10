@@ -25,7 +25,6 @@ VTstring=$(grep "VTref" on.log); # Get VTRef full string
 VTref=${VTstring:6:1};
 if ((VTref>1)); then printf "${GRE}VTref = $VTref V :Target voltage present ${DEF}\n"; break; else printf "${RED}Target voltage not present${DEF}\n"; sleep 1; fi;
 done;
-sleep 1
 
 # Recover device / Unlock Access Port Protection (APP)
 printf "${MAG}Try recover${DEF}\n"
