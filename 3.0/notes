@@ -31,7 +31,8 @@ Beobachtungen 10.7.23
   - nur in .bashrc?
   -> JLink Verzeichnis in Path im Service realisieren
 - Prüfen ob exit erfolgt?
-  - durch checken ob mini noch dran ist?
+  - durch checken ob mini noch gemounted ist? nach program übertragung connected daplink neu
+  -> durch checken von vtref
 
 
 Raspberry PI LEDs https://stackoverflow.com/questions/19863723/turn-off-leds-of-raspberry-pi
