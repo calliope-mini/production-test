@@ -30,12 +30,12 @@ printf "${MAG}Try recover${DEF}\n"
 JLinkExe -NoGui 1 -device NRF52820_xxAA -Commandfile recover.jlink > recover.log
 ReadAPfull=$(grep "Read AP register 3" recover.log);
 RECOVERED=$(echo ${ReadAPfull:32:32} | grep "0x00000001" -wc); # Check if the second read is "0x00000001", 
-if (( "$RECOVERED" > 0 )); then printf "${GRE}recovered NRF52820${DEF}\n"; else printf "${RED}recovering failed ${DEF}\n"; sleep 1; break; fi; # If unlocking fails start anew
+if (( "$RECOVERED" > 0 )); then printf "${GRE}NRF52820 recovered${DEF}\n"; else printf "${RED}recovering failed ${DEF}\n"; sleep 1; break; fi; # If unlocking fails start anew
 
 # Flash USB Firmware / DAPLink
 JLinkExe -NoGui 1 -device NRF52820_xxAA -Commandfile flash.jlink > flash.log;
 FLASHED=$(grep "^O.K." flash.log -wc);
-if (( "$FLASHED" > 1 )); then printf "${GRE}flashed NRF52820${DEF}\n"; else printf "${RED}flashing failed ${DEF}\n"; sleep 1; break; fi; # If flashing fails start anew
+if (( "$FLASHED" > 1 )); then printf "${GRE}NRF52820 flashed${DEF}\n"; else printf "${RED}flashing failed ${DEF}\n"; sleep 1; break; fi; # If flashing fails start anew
 
 # Flash Application Firmware / Testprogram
 printf "${MAG}wait for 6 seconds until device is ready${DEF}\n";
@@ -52,9 +52,11 @@ fi;
 
 cp $APPLICATION_FW $MOUNT; # Flash application firmware
 if [[ $? = 0 ]]; then
-printf "${GRE}SUCCESS: done in $(($SECONDS - $START)) seconds. ${DEF}\n";
-printf "${MAG}DISCONNECT THE MINI${DEF}\n"
-sleep 5;
+printf "${GRE}SUCCESS: Programming done in $(($SECONDS - $START)) seconds. ${DEF}\n";
+
+while true; do
+if [ -d "$MOUNT" ]; then sleep 1; else printf "${MAG}DISCONNECT THE MINI${DEF}\n"; break; fi; # Test if mini is still connected
+done
 # Here testing needs to be implemented
 echo 1 > /sys/class/leds/led0/brightness; # turns on green ACT LED
 break; # Everything successful, start anew

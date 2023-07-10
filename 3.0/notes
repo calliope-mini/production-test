@@ -30,9 +30,13 @@ Beobachtungen 10.7.23
 - JLinkExe Command not found obwohl JLinkExe in Path
   - nur in .bashrc?
   -> JLink Verzeichnis in Path im Service realisieren
+- Prüfen ob exit erfolgt?
+  - durch checken ob mini noch dran ist?
 
+
+Raspberry PI LEDs https://stackoverflow.com/questions/19863723/turn-off-leds-of-raspberry-pi
 sudo chmod 666 /sys/class/leds/led0/brightness
-echo 1 > /sys/class/leds/led0/brightness
+echo 1 > /sys/class/leds/led0/brightness 
 
 JLinkExe -NoGui 1 -device NRF52820_xxAA -Commandfile erase.jlink
 JLinkExe -NoGui 1 -device NRF52820_xxAA -Commandfile flashing.jlink
