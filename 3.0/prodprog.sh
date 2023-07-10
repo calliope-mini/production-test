@@ -52,6 +52,7 @@ fi;
 cp $APPLICATION_FW $MOUNT; # Flash application firmware
 if [[ $? = 0 ]];
 then 
+printf "${GRE}NRF52833: flashed ${DEF}\n";
 printf "${GRE}SUCCESS: Programming done in $(($SECONDS - $START)) seconds. ${DEF}\n";
 echo 1 > /sys/class/leds/led0/brightness; # turns on green ACT LED
 else 
