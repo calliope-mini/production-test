@@ -1,6 +1,5 @@
 #! /bin/bash
 
-MINIPATH="/media/$USER/MINI"
 APPLICATION_FW="microbit-prodtest_mockup.hex"
 # Change USB Firmware in flash.jlink
 MAG='\x1b[35;49;1m'
@@ -39,9 +38,11 @@ FLASHED=$(grep "^O.K." flash.log -wc);
 if (( "$FLASHED" > 1 )); then printf "${GRE}flashed NRF52820${DEF}\n"; else printf "${RED}flashing failed ${DEF}\n"; sleep 1; break; fi; # If flashing fails start anew
 
 # Flash Application Firmware / Testprogram
+DEVICE=$(blkid -L "MINI" 2>/dev/null) # get the device name e.g. /dev/sda 
+MOUNT=$(lsblk -o MOUNTPOINT -nr $DEVICE 2>/dev/null) # get the corresponding mountpoint e.g. /media/USER/MINI
 printf "${MAG}wait for 6 seconds until device is ready${DEF}\n";
 sleep 6;
-if [ -d "$MINIPATH" ]; # Check if device is connected
+if [ -d "$MOUNT" ]; # Check if device is connected
 then
 printf "${MAG}mini is connected, start flashing NRF52833${DEF}\n"; 
 else
@@ -49,7 +50,7 @@ printf "${RED}mini is not found${DEF}\n";
 break # If mini is not found, start anew
 fi;
 
-cp $APPLICATION_FW $MINIPATH; # Flash application firmware
+cp $APPLICATION_FW $MOUNT; # Flash application firmware
 if [[ $? = 0 ]]; then
 printf "${GRE}SUCCESS: done in $(($SECONDS - $START)) seconds. ${DEF}\n";
 printf "${MAG}DISCONNECT THE MINI${DEF}\n"
