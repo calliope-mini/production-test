@@ -50,7 +50,7 @@ printf "${RED}mini is not found${DEF}\n";
 break # If mini is not found, start anew
 fi;
 
-rsync $APPLICATION_FW $MINIPATH; # Flash application firmware
+cp $APPLICATION_FW $MINIPATH; # Flash application firmware
 if [[ $? = 0 ]]; then
 printf "${GRE}SUCCESS: done in $(($SECONDS - $START)) seconds. ${DEF}\n";
 printf "${MAG}DISCONNECT THE MINI${DEF}\n"
