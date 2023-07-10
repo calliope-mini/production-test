@@ -12,6 +12,16 @@ dtparam=act_led_trigger=none
 dtparam=act_led_activelow=off
 
 
+Beobachtungen 10.7.23
+- wenn bei kopiervorgang power getrennt wird, steht success
+  - problem von cp, kann mit cp nicht anders gelöst werden
+  - rsync kopiert nicht zuverlässig
+  - pyocd ist zulangsam (20s > 12s)
+  - > bleibt erstmal bei cp
+- bei erstem kopieren und erstem recover versuch steht fail
+  - gelöst mit 2 facher ausführung von SWDReadAP 2 (CTRL-AP Bank 0, erase all status) und wartezeiten
+- rsync startet programm erst korrekt und zeigt dann error 504
+
 sudo chmod 666 /sys/class/leds/led0/brightness
 echo 1 > /sys/class/leds/led0/brightness
 

@@ -15,20 +15,21 @@ VTref=0
 FLASHED=0
 RECOVERED=0
 
-# Check if target voltage (VTref) is >= than 2V
 while true; do 
+printf "${MAG}START${DEF}\n"; 
+START=$SECONDS
+
+# Check if target voltage (VTref) is >= than 2V
 JLinkExe -NoGui 1 -CommandFile on.jlink >on.log
 VTstring=$(grep "VTref" on.log); # Get VTRef full string
 VTref=${VTstring:6:1};
 if ((VTref>1)); then printf "${GRE}VTref = $VTref V :Target voltage present ${DEF}\n"; break; else printf "${RED}Target voltage not present${DEF}\n"; sleep 1; fi;
 done;
-
-printf "${MAG}START${DEF}\n"; 
-START=$SECONDS
+sleep 1
 
 # Recover device / Unlock Access Port Protection (APP)
 printf "${MAG}Try recover${DEF}\n"
-JLinkExe -NoGui 1 -device NRF52820_xxAA -Commandfile erase.jlink > recover.log
+JLinkExe -NoGui 1 -device NRF52820_xxAA -Commandfile recover.jlink > recover.log
 ReadAPfull=$(grep "Read AP register 3" recover.log);
 RECOVERED=$(echo ${ReadAPfull:32:32} | grep "0x00000001" -wc); # Check if the second read is "0x00000001", 
 if (( "$RECOVERED" > 0 )); then printf "${GRE}recovered NRF52820${DEF}\n"; else printf "${RED}recovering failed ${DEF}\n"; sleep 1; break; fi; # If unlocking fails start anew
@@ -49,9 +50,9 @@ printf "${RED}mini is not found${DEF}\n";
 break # If mini is not found, start anew
 fi;
 
-cp $APPLICATION_FW $MINIPATH; # Flash application firmware
+rsync $APPLICATION_FW $MINIPATH; # Flash application firmware
 if [[ $? = 0 ]]; then
-printf "${GRE}DONE in $(($SECONDS - $START)) seconds. ${DEF}\n";
+printf "${GRE}SUCCESS: done in $(($SECONDS - $START)) seconds. ${DEF}\n";
 printf "${MAG}DISCONNECT THE MINI${DEF}\n"
 sleep 5;
 # Here testing needs to be implemented
