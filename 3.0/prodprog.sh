@@ -10,7 +10,7 @@ GRE='\x1b[32;49m'
 
 while true; do # First loop for always on
 while true; do # Second loop to jump to when program fails
-#echo 0 > /sys/class/leds/led0/brightness; # turns off green ACT LED
+echo 0 > /sys/class/leds/led0/brightness; # turns off green ACT LED
 VTref=0
 FLASHED=0
 RECOVERED=0
@@ -56,7 +56,7 @@ printf "${GRE}SUCCESS: done in $(($SECONDS - $START)) seconds. ${DEF}\n";
 printf "${MAG}DISCONNECT THE MINI${DEF}\n"
 sleep 5;
 # Here testing needs to be implemented
-#echo 1 > /sys/class/leds/led0/brightness; # turns on green ACT LED
+echo 1 > /sys/class/leds/led0/brightness; # turns on green ACT LED
 break; # Everything successful, start anew
 else printf "${RED}Flashing of NRF52833 failed ${DEF}\n"; break; break;
 fi; 
