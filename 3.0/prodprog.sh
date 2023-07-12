@@ -9,12 +9,12 @@ RED='\x1b[39;41;1m'
 DEF='\x1b[39;49m'
 GRE='\x1b[32;49m'
 
-if [[ "$USER" == "pi" ]]; then sudo chmod 666 /sys/class/leds/led0/brightness; fi # make internal ACT led accessible
+if [[ "$USER" == "pi" ]]; then sudo chmod 666 /sys/class/leds/ACT/brightness; fi # make internal ACT led accessible
 
 
 while true; do # First loop for always on
 while true; do # Second loop to jump to when program fails
-if [[ "$USER" == "pi" ]]; then echo 0 > /sys/class/leds/led0/brightness; fi # turns off green ACT LED
+if [[ "$USER" == "pi" ]]; then echo 0 > /sys/class/leds/ACT/brightness; fi # turns off green ACT LED
 VTref=0
 FLASHED=0
 RECOVERED=0
@@ -59,7 +59,7 @@ if [[ $? = 0 ]];
 then 
 printf "${GRE}NRF52833: flashed ${DEF}\n";
 printf "${GRE}SUCCESS: Programming done in $(($SECONDS - $START)) seconds. ${DEF}\n";
-if [[ "$USER" == "pi" ]]; then echo 1 > /sys/class/leds/led0/brightness; fi;# turns on green ACT LED
+if [[ "$USER" == "pi" ]]; then echo 1 > /sys/class/leds/ACT/brightness; fi;# turns on green ACT LED
 else 
 printf "${RED}NRF52833: Flashing failed ${DEF}\n"; break; break;
 fi; 

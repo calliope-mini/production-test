@@ -4,14 +4,11 @@ JLink Arm: Check 32/64bit!
 https://www.segger.com/downloads/jlink/JLink_Linux_arm64.deb tried with version 7.88J
 https://www.segger.com/downloads/jlink/JLink_Linux_arm.tgz 
 
-Raspberry Pi Preparation: 
-- copy udev rules
-- add JLink to Path
-- disable act led in /boot/config.txt:
+Raspberry Pi Preparation Steps:
+- install JLINK https://www.segger.com/downloads/jlink/JLink_Linux_arm.deb with sudo dpkg -i JLinkXXX.deb
+- disable act led in /boot/config.txt by adding:
 dtparam=act_led_trigger=none
 dtparam=act_led_activelow=off
-dtparam=act_pwr_trigger=none
-dtparam=act_pwr_activelow=on
 
 - create service
 sudo cp /home/media/XXX /lib/systemd/system/
@@ -39,6 +36,10 @@ Beobachtungen 10.7.23
 
 
 Raspberry PI LEDs https://stackoverflow.com/questions/19863723/turn-off-leds-of-raspberry-pi
+new raspberry pi os:
+sudo chmod 666 /sys/class/leds/ACT/brightness
+sudo echo 1 > /sys/class/leds/ACT/brightness
+old raspberry pi os: 
 sudo chmod 666 /sys/class/leds/led0/brightness
 sudo echo 1 > /sys/class/leds/led0/brightness 
 
