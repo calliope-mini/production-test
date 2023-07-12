@@ -10,6 +10,9 @@ Raspberry Pi Preparation:
 - disable act led in /boot/config.txt:
 dtparam=act_led_trigger=none
 dtparam=act_led_activelow=off
+dtparam=act_pwr_trigger=none
+dtparam=act_pwr_activelow=on
+
 - create service
 sudo cp /home/media/XXX /lib/systemd/system/
 sudo systemctl --force --full edit cm3prod.service
@@ -37,7 +40,7 @@ Beobachtungen 10.7.23
 
 Raspberry PI LEDs https://stackoverflow.com/questions/19863723/turn-off-leds-of-raspberry-pi
 sudo chmod 666 /sys/class/leds/led0/brightness
-echo 1 > /sys/class/leds/led0/brightness 
+sudo echo 1 > /sys/class/leds/led0/brightness 
 
 JLinkExe -NoGui 1 -device NRF52820_xxAA -Commandfile erase.jlink
 JLinkExe -NoGui 1 -device NRF52820_xxAA -Commandfile flashing.jlink

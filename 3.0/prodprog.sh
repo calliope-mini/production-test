@@ -1,15 +1,20 @@
 #! /bin/bash
 
 APPLICATION_FW="microbit-prodtest_mockup.hex"
+COUNT=0
+
 # Change USB Firmware in flash.jlink
 MAG='\x1b[35;49;1m'
 RED='\x1b[39;41;1m'
 DEF='\x1b[39;49m'
 GRE='\x1b[32;49m'
 
+if [[ "$USER" == "pi" ]]; then sudo chmod 666 /sys/class/leds/led0/brightness; fi # make internal ACT led accessible
+
+
 while true; do # First loop for always on
 while true; do # Second loop to jump to when program fails
-echo 0 > /sys/class/leds/led0/brightness; # turns off green ACT LED
+if [[ "$USER" == "pi" ]]; then echo 0 > /sys/class/leds/led0/brightness; fi # turns off green ACT LED
 VTref=0
 FLASHED=0
 RECOVERED=0
@@ -49,15 +54,20 @@ printf "${RED}mini is not found${DEF}\n";
 break # If mini is not found, start anew
 fi;
 
-cp $APPLICATION_FW $MOUNT; # Flash application firmware
+cp $APPLICATION_FW $MOUNT; # copy application firmware to mini
 if [[ $? = 0 ]];
 then 
 printf "${GRE}NRF52833: flashed ${DEF}\n";
 printf "${GRE}SUCCESS: Programming done in $(($SECONDS - $START)) seconds. ${DEF}\n";
-echo 1 > /sys/class/leds/led0/brightness; # turns on green ACT LED
+if [[ "$USER" == "pi" ]]; then echo 1 > /sys/class/leds/led0/brightness; fi;# turns on green ACT LED
 else 
 printf "${RED}NRF52833: Flashing failed ${DEF}\n"; break; break;
 fi; 
+
+# Minimal logging of date time and count
+DATETIME=`date "+%Y.%m.%d %H:%M:%S"`
+COUNT=$((COUNT+1))
+echo "$DATETIME $COUNT $ELAPSED" >> prodprog.log
 
 # Here testing needs to be implemented
 # Wait for mini disconnection
