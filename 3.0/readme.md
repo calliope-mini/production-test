@@ -16,10 +16,10 @@ This folder contains a tool for headless production programming of Calliope mini
 ## Raspberry Pi Preparation Steps:
 - create Raspberry Pi OS 32bit (port of debian bullseye, 2023-05-03) with user "pi", choose password, internet connection not necessary
 - install ARM 32bit JLINK https://www.segger.com/downloads/jlink/JLink_Linux_arm.deb with sudo dpkg -i JLinkXXX.deb
-- disable act led in /boot/config.txt by adding to the bottom:
+- get control of ACT led in /boot/config.txt by adding to the bottom:
 dtparam=act_led_trigger=none
 dtparam=act_led_activelow=off
-- clone production-tester repo
+- clone this repo
 - copy service to systemd with sudo cp prodprog.service /lib/systemd/system/
 - enable service with sudo systemctl enable prodprog.service
 
