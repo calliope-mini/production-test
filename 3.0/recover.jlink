@@ -1,0 +1,12 @@
+// from https://devzone.nordicsemi.com/f/nordic-q-a/12484/approtect-and-dap thanks to Eric!
+SWDSelect // Select SWD Interface
+SWDWriteDP 1 0x50000000 // Enable power (as suggested by Segger response)
+SWDWriteDP 2 0x01000000 // Select CTRL-AP Bank 0
+SWDWriteAP 1 0x00000001 // Full Chip Erase
+sleep 300
+SWDReadAP 2 //CTRL-AP Bank 0, register offset 2 (ERASEALL 0x008): Erase all command status
+sleep 300
+SWDReadAP 2 //Second read returns the value
+SWDReadAP 3 //CTRL-AP Bank 0, register offset 3 (APPROTECTSTATUS 0x00C): Access port protection status
+SWDReadAP 3 //Second read returns the value: 0 means enabled; 1 means not enabled
+exit
