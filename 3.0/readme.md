@@ -43,6 +43,6 @@ dtparam=act_led_activelow=off
   - To check if service is started
 - journalctl -f -u prodprog.service
   - To see console output of service
-- prodprog.log contains get minimal logging info
+- prodprog.log contains minimal logging info of production-programming
 - recover.log contains info of last NRF52820 recovery
 - flash.log contains info of last NRF52820 flashing task
