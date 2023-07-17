@@ -42,7 +42,7 @@ FLASHED=$(grep "^O.K." flash.log -wc);
 if (( "$FLASHED" > 1 )); then printf "${GRE}NRF52820: flashed${DEF}\n"; else printf "${RED}NRF52820: flashing failed ${DEF}\n"; sleep 1; break; fi; # If flashing fails start anew
 
 # Flash Application Firmware / Testprogram
-printf "${MAG}Wait 6 seconds until minis are ready${DEF}\n";
+printf "${MAG}Wait 6 seconds until MINI device is ready${DEF}\n";
 sleep 6;
 DEVICE=$(blkid -L "MINI" 2>/dev/null) # get the device name e.g. /dev/sda 
 MOUNT=$(lsblk -o MOUNTPOINT -nr $DEVICE 2>/dev/null) # get the corresponding mountpoint e.g. /media/USER/MINI
@@ -50,7 +50,7 @@ if [ -d "$MOUNT" ]; # Check if device is connected
 then
 printf "${MAG}mini is connected, start flashing NRF52833${DEF}\n"; 
 else
-printf "${RED}mini is not found${DEF}\n";
+printf "${RED}MINI device was not found${DEF}\n";
 break # If mini is not found, start anew
 fi;
 

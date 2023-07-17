@@ -1,11 +1,11 @@
 [Unit]
-Description=Service for Calliope mini3 production programming
+Description=Service for Calliope mini V3 production programming
 After=multi.user.target
 
 [Service]
-User=hugo
-WorkingDirectory=/home/hugo/production-test/3.0/
-ExecStart=/bin/bash -c 'PATH=/home/hugo/JLinkArm/JLink_Linux_V788j_arm:$PATH exec /home/hugo/product>
+User=pi
+WorkingDirectory=/home/pi/production-test/3.0/
+ExecStart=/bin/bash -c /home/pi/production-test/3.0/prodprog.sh
 Restart=always
 
 [Install]
