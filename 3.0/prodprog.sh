@@ -1,6 +1,6 @@
 #! /bin/bash
 
-APPLICATION_FW="microbit-prodtest_mockup.hex"
+APPLICATION_FW="mini3_startprogram.hex"
 COUNT=0
 
 # Change USB Firmware in flash.jlink

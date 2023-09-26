@@ -4,9 +4,9 @@ Speed 4000 // Select SWD Speed
 reset
 halt
 // Flash bootloader
-loadfile nrf52820_microbit_bl_crc.hex
+loadfile 0258_nrf52820_mini3_bl_crc.hex
 // Flash USB firmware
-loadfile nrf52820_microbit_if_crc_proto2_11mai.hex
+loadfile 0258_nrf52820_mini3_if_crc.hex
 reset
 go
 exit
