@@ -44,7 +44,7 @@ while true; do # First loop for always on
         # Flash Application Firmware / Testprogram
         printf "${MAG}Wait 6 seconds until device is ready${DEF}\n";
         sleep 6;
-        TRIES=4
+        TRIES=8
         i=0
         while [ $i -le $TRIES ]
         do
@@ -56,8 +56,8 @@ while true; do # First loop for always on
                 printf "${MAG}mini connected, start flashing NRF52833${DEF}\n";
                 break
             else
-                printf "${DEF}MINI device not found. Try Again $i/4 ${DEF}\n";
-                sleep 2
+                printf "${DEF}MINI device not found. Try Again $i/$TRIES ${DEF}\n";
+                sleep 1
                 if [[ "$i" == $TRIES ]]; then
                     printf "${RED}MINI device not found. Start anew${DEF}\n";
                     break # If mini is not found, start anew
