@@ -56,8 +56,8 @@ while true; do # First loop for always on
                 break
             else
                 printf "${DEF}MINI device not found. Try Again${DEF}\n";
-                sleep 1
-                if [[ "$i" == '3' ]]; then
+                sleep 2
+                if [[ "$i" == '4' ]]; then
                     printf "${RED}MINI device was not found. Start anew${DEF}\n";
                     break # If mini is not found, start anew
                 fi
