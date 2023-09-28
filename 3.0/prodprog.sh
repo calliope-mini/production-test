@@ -42,28 +42,29 @@ while true; do # First loop for always on
         if (( "$FLASHED" > 1 )); then printf "${GRE}NRF52820: flashed${DEF}\n"; else printf "${RED}NRF52820: flashing failed ${DEF}\n"; sleep 1; break; fi; # If flashing fails start anew
         
         # Flash Application Firmware / Testprogram
-        printf "${MAG}Wait 6 seconds until MINI device is ready${DEF}\n";
+        printf "${MAG}Wait 6 seconds until device is ready${DEF}\n";
         sleep 6;
+        TRIES=4
         i=0
-        while [ $i -le 4 ]
+        while [ $i -le $TRIES ]
         do
             DEVICE=$(blkid -L "MINI" 2>/dev/null) # get the device name e.g. /dev/sda
             MOUNT=$(lsblk -o MOUNTPOINT -nr $DEVICE 2>/dev/null) # get the corresponding mountpoint e.g. /media/USER/MINI
             ((i++))
             if [ -d "$MOUNT" ]; # Check if device is connected
             then
-                printf "${MAG}mini is connected, start flashing NRF52833${DEF}\n";
+                printf "${MAG}mini connected, start flashing NRF52833${DEF}\n";
                 break
             else
-                printf "${DEF}MINI device not found. Try Again${DEF}\n";
+                printf "${DEF}MINI device not found. Try Again $i/4 ${DEF}\n";
                 sleep 2
-                if [[ "$i" == '4' ]]; then
-                    printf "${RED}MINI device was not found. Start anew${DEF}\n";
+                if [[ "$i" == $TRIES ]]; then
+                    printf "${RED}MINI device not found. Start anew${DEF}\n";
                     break # If mini is not found, start anew
-                fi
-                
+                fi        
             fi
         done
+        
         
         cp $APPLICATION_FW $MOUNT; # copy application firmware to mini
         if [[ $? = 0 ]];
