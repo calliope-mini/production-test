@@ -117,7 +117,7 @@ while true; do # First loop for always on
             JLinkExe -NoGui 1 -CommandFile on.jlink >on.log
             VTstring=$(grep "VTref" on.log); # Get VTRef full string
             VTref=${VTstring:6:1};
-            if ((VTref>1)); then printf "${MAG}Test and disconnect minis${DEF}\n"; sleep 1; else break; fi; # Check if VTRef is below 1V
+            if ((VTref>1)); then printf "${MAG}Test and disconnect minis${DEF}\n"; else break; fi; # Check if VTRef is below 1V
         done;
         
         break; # Everything successful, start anew
