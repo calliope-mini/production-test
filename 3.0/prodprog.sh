@@ -37,13 +37,13 @@ exportPin $APP_DONE_LED
 setOutput $IF_DONE_LED
 setOutput $APP_DONE_LED
 
-if [[ "$USER" == "pi" ]]; then sudo chmod 666 /sys/class/leds/ACT/brightness; fi # make internal ACT led accessible
+sudo chmod 666 /sys/class/leds/ACT/brightness # make internal ACT led accessible
 
 
 
 while true; do # First loop for always on
     while true; do # Second loop to jump to when program fails
-        if [[ "$USER" == "pi" ]]; then echo 0 > /sys/class/leds/ACT/brightness; fi # turns off green ACT LED
+        echo 0 > /sys/class/leds/ACT/brightness; turns off green ACT LED
         VTref=0
         FLASHED=0
         RECOVERED=0
@@ -102,7 +102,7 @@ while true; do # First loop for always on
         then
             printf "${GRE}NRF52833: flashed ${DEF}\n";
             printf "${GRE}SUCCESS: Programming done in $(($SECONDS - $START)) seconds. ${DEF}\n";
-            if [[ "$USER" == "pi" ]]; then echo 1 > /sys/class/leds/ACT/brightness; setLightState $APP_DONE_LED 1; fi;# turns on APPLED and green ACT LED
+            echo 1 > /sys/class/leds/ACT/brightness; setLightState $APP_DONE_LED 1; # turns on APPLED and green ACT LED
             
         else
             printf "${RED}NRF52833: Flashing failed ${DEF}\n"; break; break;
