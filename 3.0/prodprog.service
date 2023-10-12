@@ -3,7 +3,7 @@ Description=Service for Calliope mini V3 production programming
 After=multi.user.target
 
 [Service]
-User=pi
+User=root
 WorkingDirectory=/home/pi/production-test/3.0/
 ExecStart=/bin/bash -c /home/pi/production-test/3.0/prodprog.sh
 Restart=always
