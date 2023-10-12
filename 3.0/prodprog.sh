@@ -34,7 +34,7 @@ setLightState()
 }
 exportPin $IF_DONE_LED
 exportPin $APP_DONE_LED
-setOutput $APP_DONE_LED
+setOutput $IF_DONE_LED
 setOutput $APP_DONE_LED
 
 if [[ "$USER" == "pi" ]]; then sudo chmod 666 /sys/class/leds/ACT/brightness; fi # make internal ACT led accessible
