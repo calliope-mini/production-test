@@ -9,7 +9,36 @@ RED='\x1b[39;41;1m'
 DEF='\x1b[39;49m'
 GRE='\x1b[32;49m'
 
+# LEDs on Header on GPIO 21 and 7, https://simonprickett.dev/controlling-raspberry-pi-gpio-pins-from-bash-scripts-traffic-lights/
+IF_DONE_LED=21
+APP_DONE_LED=7
+
+# Utility function to export a pin if not already exported
+exportPin()
+{
+  if [ ! -e $BASE_GPIO_PATH/gpio$1 ]; then
+    echo "$1" > $BASE_GPIO_PATH/export
+  fi
+}
+
+# Utility function to set a pin as an output
+setOutput()
+{
+  echo "out" > $BASE_GPIO_PATH/gpio$1/direction
+}
+
+# Utility function to change state of a light
+setLightState()
+{
+  echo $2 > $BASE_GPIO_PATH/gpio$1/value
+}
+exportPin $IF_DONE_LED
+exportPin $APP_DONE_LED
+
 if [[ "$USER" == "pi" ]]; then sudo chmod 666 /sys/class/leds/ACT/brightness; fi # make internal ACT led accessible
+sudo setLightState $IF_DONE_LED 0
+sudo setLightState $APP_DONE_LED 0
+
 
 
 while true; do # First loop for always on
@@ -39,7 +68,7 @@ while true; do # First loop for always on
         # Flash USB Firmware / DAPLink
         JLinkExe -NoGui 1 -device NRF52820_xxAA -Commandfile flash.jlink > flash.log;
         FLASHED=$(grep "^O.K." flash.log -wc);
-        if (( "$FLASHED" > 1 )); then printf "${GRE}NRF52820: flashed${DEF}\n"; else printf "${RED}NRF52820: flashing failed ${DEF}\n"; sleep 1; break; fi; # If flashing fails start anew
+        if (( "$FLASHED" > 1 )); then printf "${GRE}NRF52820: flashed${DEF}\n"; setLightState $IF_DONE_LED 1; else printf "${RED}NRF52820: flashing failed ${DEF}\n"; sleep 1; break; fi; # If flashing fails start anew
         
         # Flash Application Firmware / Testprogram
         printf "${MAG}Wait 6 seconds until device is ready${DEF}\n";
@@ -71,7 +100,8 @@ while true; do # First loop for always on
         then
             printf "${GRE}NRF52833: flashed ${DEF}\n";
             printf "${GRE}SUCCESS: Programming done in $(($SECONDS - $START)) seconds. ${DEF}\n";
-            if [[ "$USER" == "pi" ]]; then echo 1 > /sys/class/leds/ACT/brightness; fi;# turns on green ACT LED
+            if [[ "$USER" == "pi" ]]; then echo 1 > /sys/class/leds/ACT/brightness; setLightState $APP_DONE_LED 1; fi;# turns on APPLED and green ACT LED
+            
         else
             printf "${RED}NRF52833: Flashing failed ${DEF}\n"; break; break;
         fi;
