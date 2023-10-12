@@ -16,28 +16,26 @@ APP_DONE_LED=7
 # Utility function to export a pin if not already exported
 exportPin()
 {
-  if [ ! -e $BASE_GPIO_PATH/gpio$1 ]; then
-    echo "$1" > $BASE_GPIO_PATH/export
+  if [ ! -e /sys/class/gpio/gpio$1 ]; then
+    echo "$1" > /sys/class/gpio/export
   fi
 }
 
 # Utility function to set a pin as an output
 setOutput()
 {
-  echo "out" > $BASE_GPIO_PATH/gpio$1/direction
+  echo "out" > /sys/class/gpio/gpio$1/direction
 }
 
 # Utility function to change state of a light
 setLightState()
 {
-  echo $2 > $BASE_GPIO_PATH/gpio$1/value
+  echo $2 > /sys/class/gpio/gpio$1/value
 }
 exportPin $IF_DONE_LED
 exportPin $APP_DONE_LED
 
 if [[ "$USER" == "pi" ]]; then sudo chmod 666 /sys/class/leds/ACT/brightness; fi # make internal ACT led accessible
-sudo setLightState $IF_DONE_LED 0
-sudo setLightState $APP_DONE_LED 0
 
 
 
@@ -51,6 +49,8 @@ while true; do # First loop for always on
         while true; do
             printf "${MAG}START${DEF}\n";
             START=$SECONDS
+            setLightState $APP_DONE_LED 0
+            setLightState $IF_DONE_LED 0
             
             # Check if target voltage (VTref) is >= than 2V
             JLinkExe -NoGui 1 -CommandFile on.jlink >on.log
