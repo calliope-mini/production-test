@@ -8,20 +8,22 @@ This folder contains a tool for headless production programming of Calliope mini
 1. Wait for VTarget of JLink programming adapter (VTarget higher than 2V means the programming adapter is connected)
 2. Recover NRF52820 device (remove Access Port Protection)
 3. Flash DAPLink Firmware to NRF52820
-4. Wait until Calliope mini 3 is mounted in OS via MSC
+4. Wait until Calliope mini 3 is mounted in OS via VFS
 5. Copy NRF52833 firmware
 6. Light up green ACT led 
 7. Wait for tests to be done and disconnection of Calliope mini 3
 
 ## Raspberry Pi Preparation Steps:
 - create Raspberry Pi OS 32bit (port of debian bullseye, 2023-05-03) with user "pi", choose password, internet connection not necessary
-- install ARM 32bit JLINK https://www.segger.com/downloads/jlink/JLink_Linux_arm.deb with sudo dpkg -i JLinkXXX.deb
+- install ARM 32bit JLINK https://www.segger.com/downloads/jlink/JLink_Linux_arm.deb with sudo apt install JLinkXXX.deb
 - get control of ACT led in /boot/config.txt by adding to the bottom:
 dtparam=act_led_trigger=none
 dtparam=act_led_activelow=off
 - clone this repo
 - copy service to systemd with sudo cp prodprog.service /lib/systemd/system/
+- reload services with sudo systemctl daemon-reload
 - enable service with sudo systemctl enable prodprog.service
+- start service with sudo systemctl start prodprog.service
 
 ## Exchange firmware files: 
 - DAPLink USB Firmware (NRF52820): modify flash.jlink
