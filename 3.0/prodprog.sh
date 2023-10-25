@@ -72,46 +72,46 @@ while true; do # First loop for always on
         FLASHED=$(grep "^O.K." flash.log -wc);
         if (( "$FLASHED" > 1 )); then printf "${GRE}NRF52820: flashed${DEF}\n"; setLightState $IF_DONE_LED 1; else printf "${RED}NRF52820: flashing failed ${DEF}\n"; sleep 1; break; fi; # If flashing fails start anew
         
-        # Flash Application Firmware / Testprogram
-        printf "${MAG}Wait 6 seconds until device is ready${DEF}\n";
-        sleep 6;
-        TRIES=8
-        i=0
-        while [ $i -le $TRIES ]
-        do
-            DEVICE=$(blkid -L "MINI" 2>/dev/null) # get the device name e.g. /dev/sda
-            MOUNT=$(lsblk -o MOUNTPOINT -nr $DEVICE 2>/dev/null) # get the corresponding mountpoint e.g. /media/USER/MINI
-            ((i++))
-            if [ -d "$MOUNT" ]; # Check if device is connected
-            then
-                printf "${MAG}mini connected, start flashing NRF52833${DEF}\n";
-                break
-            else
-                printf "${DEF}MINI device not found. Try Again $i/$TRIES ${DEF}\n";
-                sleep 1
-                if [[ "$i" == $TRIES ]]; then
-                    printf "${RED}MINI device not found. Start anew${DEF}\n";
-                    break # If mini is not found, start anew
-                fi        
-            fi
-        done
+        # # Flash Application Firmware / Testprogram
+        # printf "${MAG}Wait 6 seconds until device is ready${DEF}\n";
+        # sleep 6;
+        # TRIES=8
+        # i=0
+        # while [ $i -le $TRIES ]
+        # do
+        #     DEVICE=$(blkid -L "MINI" 2>/dev/null) # get the device name e.g. /dev/sda
+        #     MOUNT=$(lsblk -o MOUNTPOINT -nr $DEVICE 2>/dev/null) # get the corresponding mountpoint e.g. /media/USER/MINI
+        #     ((i++))
+        #     if [ -d "$MOUNT" ]; # Check if device is connected
+        #     then
+        #         printf "${MAG}mini connected, start flashing NRF52833${DEF}\n";
+        #         break
+        #     else
+        #         printf "${DEF}MINI device not found. Try Again $i/$TRIES ${DEF}\n";
+        #         sleep 1
+        #         if [[ "$i" == $TRIES ]]; then
+        #             printf "${RED}MINI device not found. Start anew${DEF}\n";
+        #             break # If mini is not found, start anew
+        #         fi        
+        #     fi
+        # done
         
         
-        cp $APPLICATION_FW $MOUNT; # copy application firmware to mini
-        if [[ $? = 0 ]];
-        then
-            printf "${GRE}NRF52833: flashed ${DEF}\n";
-            printf "${GRE}SUCCESS: Programming done in $(($SECONDS - $START)) seconds. ${DEF}\n";
-            echo 1 > /sys/class/leds/ACT/brightness; setLightState $APP_DONE_LED 1; # turns on APPLED and green ACT LED
+        # cp $APPLICATION_FW $MOUNT; # copy application firmware to mini
+        # if [[ $? = 0 ]];
+        # then
+        #     printf "${GRE}NRF52833: flashed ${DEF}\n";
+        #     printf "${GRE}SUCCESS: Programming done in $(($SECONDS - $START)) seconds. ${DEF}\n";
+        #     echo 1 > /sys/class/leds/ACT/brightness; setLightState $APP_DONE_LED 1; # turns on APPLED and green ACT LED
             
-        else
-            printf "${RED}NRF52833: Flashing failed ${DEF}\n"; break; break;
-        fi;
+        # else
+        #     printf "${RED}NRF52833: Flashing failed ${DEF}\n"; break; break;
+        # fi;
         
-        # Minimal logging of date time and count
-        DATETIME=`date "+%Y.%m.%d %H:%M:%S"`
-        COUNT=$((COUNT+1))
-        echo "$DATETIME $COUNT $ELAPSED" >> prodprog.log
+        # # Minimal logging of date time and count
+        # DATETIME=`date "+%Y.%m.%d %H:%M:%S"`
+        # COUNT=$((COUNT+1))
+        # echo "$DATETIME $COUNT $ELAPSED" >> prodprog.log
         
         # Here testing needs to be implemented
         # Wait for mini disconnection
