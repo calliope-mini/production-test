@@ -57,7 +57,7 @@ exportPin $APP_DONE_LED
 setOutput $IF_DONE_LED
 setOutput $APP_DONE_LED
 
-# sudo chmod 666 /sys/class/leds/ACT/brightness # make internal ACT led accessible
+sudo chmod 666 /sys/class/leds/ACT/brightness # make internal ACT led accessible
 
 
 
