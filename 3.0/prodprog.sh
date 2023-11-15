@@ -11,21 +11,22 @@ GRE='\x1b[32;49m'
 await_mount() {
   WAITSTART=$SECONDS
   MAX=$2
+  printf "${MAG}Wait max ${MAX}s for $1${DEF} drive\n";
   DEVICE=$(blkid -L "$1" 2>/dev/null)
   # wait until the device appears
   until (blkid -L "$1" 1>/dev/null 2>/dev/null); do 
     WAITELAPSED=$(($SECONDS-$WAITSTART))
-    printf "\r\x1b[35;49;1mWait for device${DEF} [$1] (${WAITELAPSED}s/${MAX}s)"
-    if [ "$WAITELAPSED" -gt "$2" ]; then echo; return 1; fi
+    printf "\r\x1b[35;49;1mWait appearance${DEF} [$1] (${WAITELAPSED}s/${MAX}s)"
+    if [ "$WAITELAPSED" -gt "$2" ]; then return 1; fi
   done
   DEVICE=$(blkid -L "$1")
   # wait for the device to mount
   until (udisksctl mount -b $DEVICE 1>/dev/null 2>/dev/null); do
     WAITELAPSED=$(($SECONDS-$WAITSTART))
-    printf "\r\x1b[35;49;1mWait for device${DEF} [$1] (${WAITELAPSED}s/${MAX}s)"
-    if [ "$WAITELAPSED" -gt "$2" ]; then echo; return 1; fi
+    printf "\r\x1b[35;49;1mWait for mounting${DEF} [$1] (${WAITELAPSED}s/${MAX}s)"
+    if [ "$WAITELAPSED" -gt "$2" ]; then return 1; fi
   done
-  printf "\n"
+  printf "${MAG}\nMounted [$1] in $(($SECONDS-$WAITSTART))s ${DEF}\n"
   return 0
 }
 # LEDs on Header on GPIO 21 and 7, https://simonprickett.dev/controlling-raspberry-pi-gpio-pins-from-bash-scripts-traffic-lights/
@@ -97,7 +98,7 @@ while true; do # First loop for always on
 	    DEVICE=$(blkid -L "MINI" 2>/dev/null)
 	    MOUNT=$(lsblk -o MOUNTPOINT -nr $DEVICE 2>/dev/null)
 	else 
-	    printf "${RED}Mounting failed ${DEF}\n";
+	    printf "${RED}\nMounting failed ${DEF}\n";
 	    break;
         fi
 	printf "${MAG}Start flashing NRF52833${DEF}\n";
@@ -107,7 +108,9 @@ while true; do # First loop for always on
             printf "${GRE}NRF52833: flashed ${DEF}\n";
             printf "${GRE}SUCCESS: Programming done in $(($SECONDS - $START)) seconds. ${DEF}\n";
             echo 1 > /sys/class/leds/ACT/brightness; setLightState $APP_DONE_LED 1; # turns on APPLED and green ACT LED
-	    sudo eject $DEVICE
+	    udisksctl unmount -b $DEVICE
+	    udisksctl power-off -b $DEVICE
+	    # sudo eject $DEVICE
             
         else
             printf "${RED}NRF52833: Flashing failed ${DEF}\n"; break; break;
@@ -123,7 +126,7 @@ while true; do # First loop for always on
             JLinkExe -NoGui 1 -CommandFile on.jlink >on.log
             VTstring=$(grep "VTref" on.log); # Get VTRef full string
             VTref=${VTstring:6:1};
-            if ((VTref>1)); then printf "${MAG}Test and disconnect minis${DEF}\n"; else break; fi; # Check if VTRef is below 1V
+            if ((VTref>1)); then printf "${MAG}Test and disconnect minis${DEF}\n"; sleep 1; else break; fi; # Check if VTRef is below 1V
         done;
         
         break; # Everything successful, start anew
