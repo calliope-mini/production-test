@@ -24,6 +24,7 @@ dtparam=act_led_activelow=off
 - reload services with sudo systemctl daemon-reload
 - enable service with sudo systemctl enable prodprog.service
 - start service with sudo systemctl start prodprog.service
+- disable automounting of removable media in file browser -> edit -> preferences 
 
 ## Exchange firmware files: 
 - DAPLink USB Firmware (NRF52820): modify flash.jlink
