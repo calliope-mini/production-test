@@ -1,6 +1,6 @@
 #! /bin/bash
 
-APPLICATION_FW="mini3_startprogram.hex"
+APPLICATION_FW="mini3_prodhex_151123.hex"
 COUNT=0
 
 # Change USB Firmware in flash.jlink
